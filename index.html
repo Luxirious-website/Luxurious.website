@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luxirious</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:'Poppins',sans-serif;background:#0f0f10;color:#eee}
+header{display:flex;justify-content:space-between;align-items:center;padding:18px 50px;background:#0b0b0c;position:sticky;top:0;z-index:10}
+.logo{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:600;letter-spacing:2px}
+.logo img{width:40px;height:40px;border-radius:8px}
+nav a{color:#ddd;text-decoration:none;margin-left:20px;font-size:14px}
+nav a:hover{color:#fff}
+.cartBtn{background:#fff;color:#000;padding:6px 12px;border-radius:20px;font-size:13px;margin-left:15px;cursor:pointer}
+.hero{height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:linear-gradient(135deg,#111,#1b1b1d)}
+.hero h1{font-size:52px;margin-bottom:10px}
+.hero p{color:#aaa;margin-bottom:25px}
+.btn{background:#fff;color:#000;padding:12px 26px;border-radius:30px;border:none;font-weight:600;cursor:pointer}
+.section{padding:80px 60px}
+.section-title{text-align:center;font-size:34px;margin-bottom:40px}
+.search{display:block;margin:0 auto 40px auto;padding:12px 16px;border-radius:30px;border:none;width:260px}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:30px}
+.card{background:#18181a;border-radius:14px;padding:20px;transition:.3s;position:relative}
+.card:hover{transform:translateY(-10px) scale(1.02);box-shadow:0 12px 30px rgba(0,0,0,0.45)}
+.card img{width:100%;border-radius:10px;margin-bottom:15px}
+.price{color:#ccc;margin:10px 0}
+.rating{color:gold;font-size:14px}
+button{background:#fff;color:#000;border:none;padding:10px 16px;border-radius:20px;font-weight:600;cursor:pointer}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px}
+.gallery img{width:100%;border-radius:12px;cursor:pointer;transition:.3s}
+.gallery img:hover{transform:scale(1.07)}
+.lightbox{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center}
+.lightbox img{max-width:80%;border-radius:12px}
+.about{max-width:700px;margin:auto;text-align:center;color:#bbb;line-height:1.6}
+form{max-width:500px;margin:auto;display:flex;flex-direction:column;gap:12px}
+input,textarea{padding:12px;border-radius:8px;border:none;background:#1b1b1d;color:#eee}
+textarea{min-height:120px}
+footer{margin-top:60px;background:#0b0b0c;text-align:center;padding:30px;color:#777;font-size:14px}
+.cartPanel{position:fixed;right:-400px;top:0;width:350px;height:100%;background:#111;padding:20px;transition:.4s;z-index:20}
+.cartPanel.open{right:0}
+.cartItem{display:flex;justify-content:space-between;margin:10px 0;border-bottom:1px solid #333;padding-bottom:6px}
+.checkout{margin-top:20px;width:100%}
+@media(max-width:700px){header{flex-direction:column;gap:10px}.hero h1{font-size:36px}.section{padding:60px 25px}}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">
+<img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200">
+<span>Luxirious</span>
+</div>
+<nav>
+<a href="#">Home</a>
+<a href="#products">Products</a>
+<a href="#gallery">Gallery</a>
+<a href="#about">About</a>
+<a href="#contact">Contact</a>
+<span class="cartBtn" onclick="toggleCart()">Cart (<span id="cartCount">0</span>)</span>
+</nav>
+</header>
+<section class="hero">
+<h1>Luxury Meets Style</h1>
+<p>Discover premium products designed for modern lifestyle</p>
+<button class="btn" onclick="scrollToProducts()">Shop Now</button>
+</section>
+<section id="products" class="section">
+<h2 class="section-title">Featured Products</h2>
+<input class="search" id="search" placeholder="Search products..." onkeyup="searchProducts()">
+<div class="products" id="productGrid">
+<div class="card" data-name="watch">
+<img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600">
+<h3>Luxury Watch</h3>
+<div class="rating">★★★★★</div>
+<p class="price">$120</p>
+<button onclick="addToCart('Luxury Watch',120)">Add to Cart</button>
+</div>
+<div class="card" data-name="shoes">
+<img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600">
+<h3>Designer Shoes</h3>
+<div class="rating">★★★★☆</div>
+<p class="price">$90</p>
+<button onclick="addToCart('Designer Shoes',90)">Add to Cart</button>
+</div>
+<div class="card" data-name="bag">
+<img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600">
+<h3>Premium Bag</h3>
+<div class="rating">★★★★★</div>
+<p class="price">$150</p>
+<button onclick="addToCart('Premium Bag',150)">Add to Cart</button>
+</div>
+<div class="card" data-name="sunglasses">
+<img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600">
+<h3>Luxury Sunglasses</h3>
+<div class="rating">★★★★☆</div>
+<p class="price">$70</p>
+<button onclick="addToCart('Luxury Sunglasses',70)">Add to Cart</button>
+</div>
+<div class="card" data-name="jacket">
+<img src="https://images.unsplash.com/photo-1520975916090-3105956dac38?w=600">
+<h3>Luxury Jacket</h3>
+<div class="rating">★★★★★</div>
+<p class="price">$200</p>
+<button onclick="addToCart('Luxury Jacket',200)">Add to Cart</button>
+</div>
+<div class="card" data-name="perfume">
+<img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?w=600">
+<h3>Premium Perfume</h3>
+<div class="rating">★★★★☆</div>
+<p class="price">$95</p>
+<button onclick="addToCart('Premium Perfume',95)">Add to Cart</button>
+</div>
+</div>
+</section>
+<section id="gallery" class="section">
+<h2 class="section-title">Gallery</h2>
+<div class="gallery">
+<img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=800" onclick="openImage(this.src)">
+<img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800" onclick="openImage(this.src)">
+<img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800" onclick="openImage(this.src)">
+<img src="https://images.unsplash.com/photo-1520975922284-6f8d4c0b58f6?w=800" onclick="openImage(this.src)">
+</div>
+</section>
+<div class="lightbox" id="lightbox" onclick="closeImage()"><img id="lightboxImg"></div>
+<section id="about" class="section">
+<h2 class="section-title">About Luxirious</h2>
+<p class="about">Luxirious is a premium online store delivering luxury fashion and lifestyle products. We focus on elegant design, high quality items, and a modern online shopping experience.</p>
+</section>
+<section id="contact" class="section">
+<h2 class="section-title">Contact</h2>
+<form>
+<input type="text" placeholder="Your Name" required>
+<input type="email" placeholder="Your Email" required>
+<textarea placeholder="Your Message"></textarea>
+<button type="submit">Send Message</button>
+</form>
+</section>
+<footer><p>© 2026 Luxirious — Premium Online Store</p></footer>
+<div class="cartPanel" id="cartPanel"><h2>Your Cart</h2><div id="cartItems"></div><button class="btn checkout" onclick="checkout()">Checkout</button></div>
+<script>
+let cart=[]
+function addToCart(name,price){cart.push({name,price});updateCart()}
+function updateCart(){document.getElementById('cartCount').innerText=cart.length;let c=document.getElementById('cartItems');c.innerHTML='';cart.forEach(i=>{let d=document.createElement('div');d.className='cartItem';d.innerHTML=`${i.name} <span>$${i.price}</span>`;c.appendChild(d)})}
+function toggleCart(){document.getElementById('cartPanel').classList.toggle('open')}
+function checkout(){alert('Checkout would connect to a payment system here.')}
+function scrollToProducts(){document.getElementById('products').scrollIntoView({behavior:'smooth'})}
+function searchProducts(){let input=document.getElementById('search').value.toLowerCase();let cards=document.querySelectorAll('.card');cards.forEach(card=>{let name=card.dataset.name;card.style.display=name.includes(input)?'block':'none'})}
+function openImage(src){document.getElementById('lightbox').style.display='flex';document.getElementById('lightboxImg').src=src}
+function closeImage(){document.getElementById('lightbox').style.display='none'}
+</script>
+</body>
+</html>
